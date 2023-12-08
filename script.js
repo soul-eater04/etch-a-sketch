@@ -10,7 +10,8 @@ function addFlexbox(number){
             const smallBox = document.createElement('div');
             smallBox.addEventListener('click',(e) => color(e))
             smallBox.style.backgroundColor = 'white';
-            smallBox.style.border = "1px dashed grey";
+            // smallBox.style.border = "1px dashed grey";
+            smallBox.style.borderRadius = "25%";
             smallBox.style.flexGrow = '1';
             bigBox.appendChild(smallBox);
         }
@@ -35,9 +36,13 @@ function color(e){
 }
 
 addFlexbox(25);
-const btn = document.querySelector('button');
+const btn = document.querySelector('.grid');
 btn.addEventListener('click',() =>{
     let size = prompt("ENTER THE SIZE OF GRID");
+    if(size > 100){
+        alert("ENTER SIZE LESS THAN 100!");
+        size = prompt("ENTER THE SIZE OF GRID");
+    }
     clear();
     addFlexbox(size);
 });
