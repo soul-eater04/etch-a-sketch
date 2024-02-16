@@ -8,32 +8,58 @@ function addFlexbox(number){
         container.appendChild(bigBox);
         for(let j = 0 ; j < number ; j++){
             const smallBox = document.createElement('div');
-            smallBox.addEventListener('click',(e) => color(e))
+            smallBox.addEventListener('mousemove',(e) => handleMouseMove(e));
+            smallBox.addEventListener('mousedown',(e)=> handleMouseDown(e));
+            smallBox.addEventListener('mouseup',(e)=> handleMouseUp(e));
             smallBox.style.backgroundColor = 'white';
             // smallBox.style.border = "1px dashed grey";
-            smallBox.style.borderRadius = "25%";
+            smallBox.style.borderRadius = "10%";
             smallBox.style.flexGrow = '1';
             bigBox.appendChild(smallBox);
         }
     }
 }
 
-function clear(){
-    const container = document.querySelector('.container');
-    while(container.firstChild){
-        container.removeChild(container.firstChild);
-    } 
+function erase(){
+    eraser = true;
 }
 
-function color(e){
-    const box = e.target;
-    if(box.style.backgroundColor === 'white'){
-        box.style.backgroundColor = 'black';
+function brush(){
+    eraser = false;
+}
+
+function handleMouseDown(e){
+    mouseDown = true;
+}
+
+function handleMouseUp(e){
+    mouseDown = false;
+}
+
+function reset(){
+    const smallBoxes = document.querySelectorAll('.container > div > div');
+    smallBoxes.forEach((smallBox) => {
+    smallBox.style.backgroundColor = 'white';
+    });
+}
+
+function handleMouseMove(e){
+    if(!mouseDown){
+        return;
     }
     else{
-        box.style.backgroundColor = 'white';
+        const box = e.target;
+        if(eraser == true){
+            box.style.backgroundColor = 'white';    
+        }
+        else{
+            box.style.backgroundColor = 'black';
+        }
     }
 }
+
+let mouseDown = false;
+let eraser = false;
 
 addFlexbox(25);
 const btn = document.querySelector('.grid');
@@ -46,3 +72,13 @@ btn.addEventListener('click',() =>{
     clear();
     addFlexbox(size);
 });
+
+
+const ers = document.querySelector('.eraser');
+ers.addEventListener('click',() => erase());
+
+const brsh = document.querySelector('.brush');
+brsh.addEventListener('click',() => brush());
+
+const res = document.querySelector('.reset');
+res.addEventListener('click',() => reset());
